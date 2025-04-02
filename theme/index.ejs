@@ -8,7 +8,7 @@
 
 <%
 let counter = 0;
-const isPublished = post => new Date(post.date) <= new Date();
+const isPublished = date => new Date(date) <= new Date();
 const years = Array.from(groupedPosts.keys()).sort((a, b) => b - a) || [];
 const mid = parseInt((years.length / 2) || 1, 10) - 1;
         for (let year of years) {

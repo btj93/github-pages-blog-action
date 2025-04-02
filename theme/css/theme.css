@@ -746,7 +746,7 @@ footer {
   text-decoration: none;
   transition: color .25s, padding-left .25s;
 
-  .draft {
+  &.draft {
     background: lightgrey;
     cursor: not-allowed;
   }
