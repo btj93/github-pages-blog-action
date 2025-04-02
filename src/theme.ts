@@ -31,6 +31,7 @@ type SiteConfigType = {
   owner: {
     name: string;
     email: string;
+    bio: string;
   };
   social: {
     github: string;

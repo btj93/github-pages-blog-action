@@ -1,15 +1,23 @@
 <article>
   <!-- Author section starts here -->
   <div class="author-section">
-    <div class="author-name">Jane Doe</div>
+    <div class="author-name"> <%- siteConfig.owner.name %> </div>
     <p class="author-bio">
-      Jane is a senior software engineer with over 10 years of experience in web development. 
-      She specializes in frontend technologies and loves sharing her knowledge through writing.
+      <%- siteConfig.owner.bio %>
     </p>
     <div class="author-links">
-      <a href="https://twitter.com/janedoe" target="_blank" rel="noopener noreferrer">Twitter</a>
-      <a href="https://github.com/janedoe" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href="https://janedoe.com" target="_blank" rel="noopener noreferrer">Website</a>
+      <% if (siteConfig.social?.github) { %>
+        <a href="https://github.com/<%- siteConfig.social.github %>" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <% } %>
+      <% if (siteConfig.social?.twitter) { %>
+        <a href="https://twitter.com/<%- siteConfig.social.twitter %>" target="_blank" rel="noopener noreferrer">Twitter</a>
+      <% } %>
+      <% if (siteConfig.social?.linkedin) { %>
+        <a href="https://www.linkedin.com/in/<%- siteConfig.social.linkedin %>" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <% } %>
+      <% if (siteConfig.owner?.email) { %>
+        <a href="mailto:<%- siteConfig.owner.email %>" target="_blank" rel="noopener noreferrer">Email</a>
+      <% } %>
     </div>
   </div>
   <!-- Author section ends here -->
