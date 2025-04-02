@@ -95,7 +95,8 @@ export async function prepareTheme(configuration: ConfigurationType) {
       let { title, date, permalink, externalUrl } = parsed.attributes;
 
       if (!date) {
-        date = dayjs().format('ddd, MMMM DD, YYYY');
+        // ignore posts without date
+        continue;
       } else {
         date = dayjs(date).format('ddd, MMMM DD, YYYY');
       }
