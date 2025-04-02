@@ -760,6 +760,7 @@ footer {
 .post__title {
   font-weight: 500;
   padding-left: 1rem;
+  max-width: 70%;
 }
 
 .post__date {
