@@ -747,6 +747,7 @@ footer {
   transition: color .25s, padding-left .25s;
 
   &.draft {
+    color: darkgrey;
     background: lightgrey;
     cursor: not-allowed;
   }
