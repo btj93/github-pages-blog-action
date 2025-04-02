@@ -755,7 +755,6 @@ footer {
 
 .post:not(.draft):hover {
   color: #0087F8;
-  padding-left: 1rem;
   background: lightyellow;
 }
 
@@ -897,4 +896,60 @@ pre .lineno {
 
 .mc-form__button:focus {
   outline: 0
+}
+
+/* Author section styles */
+.author-section {
+  margin-top: 40px;
+  padding: 24px;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.author-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.author-bio {
+  font-size: 1rem;
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.author-links {
+  display: flex;
+  gap: 16px;
+}
+
+.author-links a {
+  color: #0070f3;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.author-links a:hover {
+  color: #0051b3;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .author-section {
+    padding: 16px;
+  }
+
+  .author-name {
+    font-size: 1.25rem;
+  }
+
+  .author-links {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
