@@ -95,6 +95,8 @@ export async function prepareTheme(configuration: ConfigurationType) {
 
       let { title, date, permalink, externalUrl } = parsed.attributes;
 
+      console.log(title, date);
+
       if (!date) {
         // ignore posts without date
         continue;
