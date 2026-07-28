@@ -8,7 +8,10 @@
 
 <%
 let counter = 0;
-const isPublished = date => new Date(date) <= new Date();
+// Build-time verdict only. Time moves forward, so the client script below can
+// promote a draft to published but never the reverse -- which makes this the
+// safe fallback state when JavaScript is unavailable.
+const isPublished = isoDate => new Date(`${isoDate}T00:00:00`) <= new Date();
 const years = Array.from(groupedPosts.keys()).sort((a, b) => b - a) || [];
 const mid = parseInt((years.length / 2) || 1, 10) - 1;
         for (let year of years) {
@@ -17,17 +20,21 @@ const mid = parseInt((years.length / 2) || 1, 10) - 1;
         <h3 class="section__title"><%- year %></h3>
         <div class="post-list">
             <% for (let post of groupedPosts.get(year)) { %>
-              <% if (isPublished(post.date)) { %>
-                <a class="post" href="<%- `${siteConfig.baseUrl || ''}${post.externalUrl || post.permalink}` %>" target="<%- post.externalUrl ? '_blank': '_self' %>">
+              <%
+                const postHref = `${siteConfig.baseUrl || ''}${post.externalUrl || post.permalink}`;
+                const postTarget = post.externalUrl ? '_blank' : '_self';
+                const published = isPublished(post.isoDate);
+                // A draft carries no href, which is what makes the anchor inert
+                // and unfocusable until the script below promotes it.
+                const linkAttrs = published ? ` href="${postHref}" target="${postTarget}"` : '';
+              %>
+                <a class="post<%- published ? '' : ' draft' %>"<%- linkAttrs %>
+                   data-publish="<%- post.isoDate %>"
+                   data-href="<%- postHref %>"
+                   data-target="<%- postTarget %>">
                     <span class="post__title"><%- post.title %></span>
-                    <time class="post__date" datetime=" 2018-12-04"><%- post.date %></time>
+                    <time class="post__date" datetime="<%- post.isoDate %>"><%- post.date %></time>
                 </a>
-              <% } else { %>
-                <div class="post draft">
-                    <span class="post__title"><%- post.title %></span>
-                    <time class="post__date" datetime=" 2018-12-04"><%- post.date %></time>
-                </div>
-              <% } %>
             <% } %>
         </div>
     </section>
@@ -43,5 +50,26 @@ const mid = parseInt((years.length / 2) || 1, 10) - 1;
 <% if (counter === 0) { %>
     <%- include('_includes/newsletter', { siteConfig }) %>
 <% } %>
+
+<script>
+  // A post whose date has arrived since the last build is still marked as a
+  // draft in this HTML. Promote it now, using the visitor's clock rather than
+  // the build clock. Dates are parsed without a zone, so a post goes live at
+  // midnight local to whoever is reading.
+  (function () {
+    var now = new Date();
+    var drafts = document.querySelectorAll('a.post.draft[data-publish]');
+
+    Array.prototype.forEach.call(drafts, function (el) {
+      if (new Date(el.getAttribute('data-publish') + 'T00:00:00') > now) {
+        return;
+      }
+
+      el.setAttribute('href', el.getAttribute('data-href'));
+      el.setAttribute('target', el.getAttribute('data-target'));
+      el.classList.remove('draft');
+    });
+  })();
+</script>
 
 <%- include('_includes/footer', { siteConfig }) %>

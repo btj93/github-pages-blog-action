@@ -19,6 +19,7 @@ type FrontMatterType = {
 type PostType = {
   title: string;
   date: string;
+  isoDate: string;
   permalink: string;
   externalUrl: string;
   html: string;
@@ -100,9 +101,13 @@ export async function prepareTheme(configuration: ConfigurationType) {
       if (!date) {
         // ignore posts without date
         continue;
-      } else {
-        date = dayjs(date).format('ddd, MMMM DD, YYYY');
       }
+
+      // Both forms come from a single parse so the displayed date and the
+      // machine-readable one can never disagree.
+      const parsedDate = dayjs(date);
+      const isoDate = parsedDate.format('YYYY-MM-DD');
+      date = parsedDate.format('ddd, MMMM DD, YYYY');
 
       const postHtml = htmlConverter.makeHtml(parsed.body);
 
@@ -118,6 +123,7 @@ export async function prepareTheme(configuration: ConfigurationType) {
       const postMeta = {
         title,
         date,
+        isoDate,
         permalink: path.join('/', nestedPostDir, fileName),
         externalUrl,
         html: postHtml
@@ -158,10 +164,11 @@ export async function prepareTheme(configuration: ConfigurationType) {
 
   async function prepareHome(posts: PostType[]) {
     info('Preparing homepage');
-    posts.sort((a, b) => dayjs(b.date).date() - dayjs(a.date).date());
+    // Lexicographic compare on YYYY-MM-DD is exact date ordering, newest first.
+    posts.sort((a, b) => b.isoDate.localeCompare(a.isoDate));
 
     const groupedPosts = posts.reduce((aggMap, postItem) => {
-      const year = dayjs(postItem.date).format('YYYY');
+      const year = postItem.isoDate.slice(0, 4);
 
       aggMap.set(year, [...(aggMap.get(year) || []), postItem]);
 

@@ -1,0 +1,18 @@
+{
+  "title": "Fixture Blog",
+  "subtitle": "A blog used by the generation tests",
+  "owner": {
+    "name": "Fixture Author",
+    "email": "fixture@example.com",
+    "bio": "Bio for the fixture author."
+  },
+  "social": {
+    "github": "fixture"
+  },
+  "seo": {
+    "title": "Fixture Blog",
+    "description": "Fixture blog description",
+    "author": "Fixture Author",
+    "keywords": ["fixture"]
+  }
+}
